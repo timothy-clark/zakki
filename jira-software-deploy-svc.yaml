@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jira-software-deploy
+  labels:
+    app: jira-software
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jira-software
+  template:
+    metadata:
+      labels:
+        app: jira-software
+    spec:
+      containers:
+      - name: jira-software
+        image: atlassian/jira-software:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service   
+metadata:
+  name: jira-software-svc
+  labels:
+    app: jira-software
+spec:
+  type: LoadBalancer 
+  ports:
+  - port: 8080  
+    targetPort: 8080
+    nodePort: 30001
+  selector:
+    app: jira-software 

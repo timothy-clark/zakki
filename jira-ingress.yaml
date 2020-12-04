@@ -1,0 +1,63 @@
+apiVersion: networking.k7s.io/v1beta1
+kind: Ingress
+metadata:
+  name: jira-ingress
+  annotations:
+    kubernetes.io/ingress.class: 'nginx'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+  - host: www.jira.zakki.org
+    - http:
+        paths:
+          - path: /?(.*)
+            backend:
+              serviceName: jira-software-svc
+              servicePort: 8080
+          - path: /bitbucket/?(.*)
+            backend:
+              serviceName: bitbucket-svc 
+              servicePort: 7990
+          - path: /confluence/?(.*)
+            backend:
+              serviceName: confluence-server-svc 
+              servicePort: 8090
+      
+      # - path: /
+      #   pathType: Prefix
+      #   backend:
+      #       service:
+      #         name: confluence-erver-svc
+      #         port:
+      #           number: 8090
+      # - path: /as
+      #   pathType: Prefix
+      #   backend:s
+      #       service:
+      #         name: bitbucket-svc 
+      #         port:
+      #           number: 7990
+
+# apiVersion: networking.k8s.io/v1beta1
+# kind: Ingress
+# metadata:
+#   name: jira-ingress
+  # annotations:
+  #   kubernetes.io/ingress.class: 'nginx'
+  #   nginx.ingress.kubernetes.io/use-regex: 'true'
+  #   nginx.ingress.kubernetes.io/rewrite-target: /$1
+# spec:
+#   rules:
+#   - host: dashboard.com
+#     http:
+#       paths:
+#       - backend:
+#           serviceName: kubernetes-dashboard
+#           servicePort: 80
+    # host: info.myapp.com
+    # http:
+    #   paths:     
+    #   - backend:
+    #       serviceName: bitbucket-svc
+    #       servicePort: 7990
